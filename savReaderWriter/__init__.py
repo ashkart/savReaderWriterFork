@@ -91,7 +91,7 @@ MAXLENGTHS = {
     "SPSS_MAX_IDSTRING": (64, "File label string"),
     "SPSS_MAX_LONGSTRING": (32767, "Long string variable"),
     "SPSS_MAX_VALLABEL": (120, "Value label"),
-    "SPSS_MAX_VARLABEL": (256, "Variable label"),
+    "SPSS_MAX_VARLABEL": (512, "Variable label"),
     "SPSS_MAX_7SUBTYPE": (40, "Maximum record 7 subtype"),
     "SPSS_MAX_ENCODING": (64, "Maximum encoding text")}
 
