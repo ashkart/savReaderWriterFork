@@ -3,13 +3,14 @@
 
 # python setup.py sdist --formats=gztar,zip bdist --formats=rpm,wininst
 # sudo python setup.py register -r https://testpypi.python.org/pypi sdist --formats=gztar bdist --formats=egg upload -r https://testpypi.python.org/pypi
-# sudo python setup.py check build_sphinx --source-dir=savReaderWriter/documentation -v
+# sudo python setup.py check build_sphinx --source-dir=savReaderWriterFork/documentation -v
 # sudo python setup.py check upload_sphinx --upload-dir=build/sphinx/html
 
 import os
 import sys
 import platform
-import versioneer
+import setuptools
+# import versioneer
 from os.path import join, dirname
 try:
     from ez_setup import use_setuptools
@@ -20,16 +21,16 @@ from setuptools import setup
 
 
 # automatic labeling of dists
-versioneer.VCS = 'git'
-versioneer.versionfile_source = 'savReaderWriter/_version.py'
-versioneer.versionfile_build = 'savReaderWriter/_version.py'
-versioneer.tag_prefix = 'v'  # tags are like v1.2.0
-versioneer.parentdir_prefix = 'savReaderWriter-'
-version = versioneer.get_version()
-with open(join(dirname(__file__), "VERSION"), "w") as f:
-    f.write(version)
-with open(join(dirname(__file__), "savReaderWriter/VERSION"), "w") as f:
-    f.write(version)
+# versioneer.VCS = 'git'
+# versioneer.versionfile_source = '_version.py'
+# versioneer.versionfile_build = '_version.py'
+# versioneer.tag_prefix = 'v'  # tags are like v1.2.0
+# versioneer.parentdir_prefix = ''
+# version = versioneer.get_version()
+# with open(join(dirname(__file__), "VERSION"), "w") as f:
+#     f.write(version)
+# with open(join(dirname(__file__), "VERSION"), "w") as f:
+#     f.write(version)
 
 
 #####
@@ -42,7 +43,7 @@ is_install_mode = 'install' in sys.argv
 pf = sys.platform.lower()
 
 ## This is included in every platform
-package_data = {'savReaderWriter': ['spssio/include/*.*',
+package_data = {'savReaderWriterFork': ['spssio/include/*.*',
                                     'spssio/documents/*',
                                     'spssio/license/*',
                                     'cWriterow/*.*',
@@ -55,30 +56,30 @@ package_data = {'savReaderWriter': ['spssio/include/*.*',
 ## *installing* the package: install only platform-relevant libraries
 if is_install_mode:             
     if pf.startswith("win") and is_32bit:
-        package_data['savReaderWriter'].append('spssio/win32/*.*')
+        package_data['savReaderWriterFork'].append('spssio/win32/*.*')
     elif pf.startswith("win"):
-        package_data['savReaderWriter'].append('spssio/win64/*.*')
+        package_data['savReaderWriterFork'].append('spssio/win64/*.*')
     elif pf.startswith("lin") and is_32bit:
-        package_data['savReaderWriter'].append('spssio/lin32/*.*')
+        package_data['savReaderWriterFork'].append('spssio/lin32/*.*')
     elif pf.startswith("lin") and is_64bit and os.uname()[-1] == "s390x":
-        package_data['savReaderWriter'].append('spssio/zlinux64/*.*')
+        package_data['savReaderWriterFork'].append('spssio/zlinux64/*.*')
     elif pf.startswith("lin") and is_64bit:
-        package_data['savReaderWriter'].append('spssio/lin64/*.*')
+        package_data['savReaderWriterFork'].append('spssio/lin64/*.*')
     elif pf.startswith("darwin") or pf.startswith("mac"):
-        package_data['savReaderWriter'].append('spssio/macos/*.*')
+        package_data['savReaderWriterFork'].append('spssio/macos/*.*')
     elif pf.startswith("aix") and not is_32bit:
-        package_data['savReaderWriter'].append('spssio/aix64/*.*')
+        package_data['savReaderWriterFork'].append('spssio/aix64/*.*')
     elif pf.startswith("hp-ux"):
-        package_data['savReaderWriter'].append('spssio/hpux_it/*.*')
+        package_data['savReaderWriterFork'].append('spssio/hpux_it/*.*')
     elif pf.startswith("sunos") and not is_32bit:
-        package_data['savReaderWriter'].append('spssio/sol64/*.*')
+        package_data['savReaderWriterFork'].append('spssio/sol64/*.*')
     else:
         msg = "Your platform (%r, %s) is not supported" % (pf, arch)
         raise EnvironmentError(msg)
 
 ## *building* the package: include all the libraries
 else: 
-    package_data['savReaderWriter'].extend(['spssio/win32/*.*',
+    package_data['savReaderWriterFork'].extend(['spssio/win32/*.*',
                                             'spssio/win64/*.*',
                                             'spssio/lin32/*.*',
                                             'spssio/zlinux64/*.*',
@@ -88,25 +89,24 @@ else:
                                             'spssio/hpux_it/*.*',
                                             'spssio/sol64/*.*'])
 
-email = "@".join(["fomcl", "yahoo.com"])
+email = "@".join(["maxim201011", "gmail.com"])
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read().strip()
 
-setup(name='savReaderWriter',
+setup(name='savReaderWriterFork',
       description='Read and write SPSS files',
-      author='Albert-Jan Roskam',
+      author='ashkart',
       author_email=email,
-      maintainer='Albert-Jan Roskam',
+      maintainer='ashkart',
       maintainer_email=email,
       license='MIT',
       long_description=read('README'),
       zip_safe=False,
       platforms=['Windows', 'MacOS', 'POSIX'],
-      url='https://bitbucket.org/fomcl/savreaderwriter',
-      download_url='https://bitbucket.org/fomcl/savreaderwriter/downloads',
+      url='https://bitbucket.org/fomcl/savReaderWriterFork',
       extras_require={'numpy': ["numpy"],
                       'Cython': ["Cython"],},
-      packages=['savReaderWriter'],
+      packages=setuptools.find_packages(),
       package_data=package_data,
       classifiers=['Development Status :: 4 - Beta',
                    'Intended Audience :: Developers',
@@ -129,6 +129,5 @@ setup(name='savReaderWriter',
                    'Programming Language :: Python :: Implementation :: CPython',
                    'Programming Language :: Python :: Implementation :: PyPy',
                    'Topic :: Database'],
-      version=version,
-      cmdclass=versioneer.get_cmdclass()
+      version='3.5'
       )

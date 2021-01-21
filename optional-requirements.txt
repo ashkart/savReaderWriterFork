@@ -1,4 +1,4 @@
-Cython==0.21.1
-numpy==1.10.2
-pandas==0.14.1
+Cython==0.29.21
+numpy==1.16.6
+pandas==0.24.2
 #PyQt4
